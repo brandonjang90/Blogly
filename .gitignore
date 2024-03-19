@@ -1,2 +1,4 @@
-.DS_Store
-venv
+venv/
+.gitignore/
+__pycache__/
+**/.DS_Store
