@@ -26,6 +26,18 @@
                     formmethod="POST">Delete
             </button>
         </form>
+
+        <h2 class="mt-2"> Posts </h2>
+        <ul>
+            {% for post in user.posts %}
+            <li>
+                <a href="/posts/{{post.id}}">{{post.title}}</a>
+                <small>{{post.created_at}}</small>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <a href="/users/{{user.id}}/posts/form" class="btn btn-primary">New Post</a>
         </div>
     </div>
 

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <small> Posted on {{post.created_at}} By {{post.user.full_name}}</small>
+    
+    <form>
+        <button class="btn btn-primary btn-sm"
+                formaction="/posts/{{post.id}}/edit"
+                formmethod="GET">Edit
+        </button>
+
+        <button class="btn btn-danger btn-sm"
+                formaction="/posts/{{post.id}}/delete"
+                formmethod="POST">Delete
+        </button>
+
+        <a href="/users/{{post.user_id}}" class="btn btn-outline-danger btn-sm">Cancel</a>
+
+    </form>
+
+{% endblock %}

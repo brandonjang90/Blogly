@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app
-from models import db, User
+from models import db, User, Post
 
 # Use test database and don't clutter tests with SQL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///sqla_intro_test'
@@ -36,8 +36,27 @@ class BloglyTestCase(TestCase):
 
     def test_add_user(self):
         with app.test_client() as client:
-            res = client.get('/users/form')
-            html = res.get_data(as_text=True)
+            resp = client.get('/users/form')
+            html = resp.get_data(as_text=True)
             
-            self.assertEqual(res.status_code, 200)
+            self.assertEqual(resp.status_code, 200)
             self.assertIn('<h1>Create a User!</h1>', html)
+
+
+    def test_new_post(self):
+        with app.test_client() as client:
+            user = User.query.first()
+            data = {'title': 'Test Post', 'content': 'This is a test post.'}
+            resp = client.post(f'/users/{user.id}/posts/form', data=data)
+            post = Post.query.filter_by(title=data['title']).first()
+
+            self.assertEqual(resp.status_code, 302)
+            self.assertIsNotNone(post)
+
+    def test_post_edit_form(self):
+        with app.test_client() as client:
+            post_id = 1  
+            resp = client.get(f'/posts/{post_id}/edit')
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Edit Post', resp.data)
